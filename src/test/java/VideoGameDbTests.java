@@ -50,4 +50,40 @@ public class VideoGameDbTests extends VideoGameConfig {
                 .post(VideoGamesEndPoints.ALL_VIDEO_GAMES).
         then();
     }
+
+    @Test
+    public void updateGame() {
+        String gameBodyJson = "{\n" +
+                "  \"id\": 1,\n" +
+                "  \"name\": \"MyNewGame\",\n" +
+                "  \"releaseDate\": \"2022-11-09T16:15:48.530Z\",\n" +
+                "  \"reviewScore\": 77,\n" +
+                "  \"category\": \"Driving\",\n" +
+                "  \"rating\": \"Universal\"\n" +
+                "}";
+
+        given()
+                .body(gameBodyJson)
+                .contentType(ContentType.JSON).
+                when()
+                .put("videogames/1").
+        then();
+    }
+
+    @Test
+    public void deleteGame() {
+        given().
+        when()
+                .delete("videogames/1").
+        then();
+    }
+
+    @Test
+    public void getSingleGame() {
+        given()
+                .pathParam("videoGameId",5).
+        when()
+                .get(VideoGamesEndPoints.SINGLE_VIDEO_GAME).
+        then();
+    }
 }
