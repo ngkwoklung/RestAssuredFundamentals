@@ -20,7 +20,7 @@ public class VideoGameConfig {
                 .setBaseUri("http://localhost")
                 .setBasePath("/app/")
                 .setPort(8080)
-                .addHeader("Content_Type", "application/json")
+                .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())

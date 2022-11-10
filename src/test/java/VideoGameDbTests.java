@@ -26,8 +26,7 @@ public class VideoGameDbTests extends VideoGameConfig {
                 "}";
 
         given()
-                .body(gameBodyJson)
-                .contentType(ContentType.JSON).
+                .body(gameBodyJson).
         when()
                 .post(VideoGamesEndPoints.ALL_VIDEO_GAMES).
         then();
@@ -63,9 +62,8 @@ public class VideoGameDbTests extends VideoGameConfig {
                 "}";
 
         given()
-                .body(gameBodyJson)
-                .contentType(ContentType.JSON).
-                when()
+                .body(gameBodyJson).
+        when()
                 .put("videogames/1").
         then();
     }
@@ -84,6 +82,18 @@ public class VideoGameDbTests extends VideoGameConfig {
                 .pathParam("videoGameId",5).
         when()
                 .get(VideoGamesEndPoints.SINGLE_VIDEO_GAME).
+        then();
+    }
+
+    @Test
+    public void testVideoGameSerializationByJSON() {
+        VideoGameDTO videoGame = new VideoGameDTO(99, "2018-04-04", "My Awesome Game"
+                , "Mature", 15, "Shooter");
+
+        given()
+                .body(videoGame).
+        when().
+                post(VideoGamesEndPoints.ALL_VIDEO_GAMES).
         then();
     }
 }
