@@ -1,16 +1,19 @@
 import config.VideoGameConfig;
-import config.VideoGamesEndPoints;
-import io.restassured.http.ContentType;
+import config.VideoGamesEndpoints;
+import io.restassured.response.Response;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.*;
+import static io.restassured.matcher.RestAssuredMatchers.matchesXsdInClasspath;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.Matchers.lessThan;
 
 public class VideoGameDbTests extends VideoGameConfig {
 
     @Test
     public void getAllGames() {
         given().
-        when().get(VideoGamesEndPoints.ALL_VIDEO_GAMES).
+        when().get(VideoGamesEndpoints.ALL_VIDEO_GAMES).
         then();
     }
 
@@ -28,7 +31,7 @@ public class VideoGameDbTests extends VideoGameConfig {
         given()
                 .body(gameBodyJson).
         when()
-                .post(VideoGamesEndPoints.ALL_VIDEO_GAMES).
+                .post(VideoGamesEndpoints.ALL_VIDEO_GAMES).
         then();
     }
 
@@ -46,7 +49,7 @@ public class VideoGameDbTests extends VideoGameConfig {
                 .header("accept","application/xml")
                 .header("Content-Type","application/xml").
         when()
-                .post(VideoGamesEndPoints.ALL_VIDEO_GAMES).
+                .post(VideoGamesEndpoints.ALL_VIDEO_GAMES).
         then();
     }
 
@@ -81,7 +84,7 @@ public class VideoGameDbTests extends VideoGameConfig {
         given()
                 .pathParam("videoGameId",5).
         when()
-                .get(VideoGamesEndPoints.SINGLE_VIDEO_GAME).
+                .get(VideoGamesEndpoints.SINGLE_VIDEO_GAME).
         then();
     }
 
@@ -93,7 +96,54 @@ public class VideoGameDbTests extends VideoGameConfig {
         given()
                 .body(videoGame).
         when().
-                post(VideoGamesEndPoints.ALL_VIDEO_GAMES).
+                post(VideoGamesEndpoints.ALL_VIDEO_GAMES).
         then();
+    }
+
+    @Test
+    public void testVideoGameSchemaXML() {
+        given().
+                pathParam("videoGameId", 5).
+                header("Content-Type", "application/xml").
+                header("Accept", "application/xml").
+        when().
+                get(VideoGamesEndpoints.SINGLE_VIDEO_GAME).
+        then().
+                body(matchesXsdInClasspath("VideoGameXSD.xsd"));
+    }
+
+    @Test
+    public void testVideoGameSchemaJSON() {
+        given().
+                pathParam("videoGameId", 5).
+                when().
+                get(VideoGamesEndpoints.SINGLE_VIDEO_GAME).
+                then().
+                body(matchesJsonSchemaInClasspath("VideoGameJsonSchema.json"));
+    }
+
+    @Test
+    public void convertJSONToPojo() {
+        Response response =  given().pathParam("videoGameId", 5).
+        when().
+                get(VideoGamesEndpoints.SINGLE_VIDEO_GAME);
+
+        VideoGameDTO videoGame = response.getBody().as(VideoGameDTO.class);
+
+        System.out.println(videoGame.toString());
+    }
+
+    @Test
+    public void captureResponseTime() {
+        long responseTime = get(VideoGamesEndpoints.ALL_VIDEO_GAMES).time();
+        System.out.println("Response time in MS: " + responseTime);
+    }
+
+    @Test
+    public void assertOnResponseTime() {
+        when()
+                .get(VideoGamesEndpoints.ALL_VIDEO_GAMES).
+        then()
+                .time(lessThan(1000L));
     }
 }

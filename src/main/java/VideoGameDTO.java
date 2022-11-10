@@ -1,11 +1,26 @@
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class VideoGameDTO{
+
+	@JsonProperty("reviewScore")
 	private int reviewScore;
+
+	@JsonProperty("releaseDate")
 	private String releaseDate;
+
+	@JsonProperty("name")
 	private String name;
+
+	@JsonProperty("rating")
 	private String rating;
+
+	@JsonProperty("id")
 	private int id;
+
+	@JsonProperty("category")
 	private String category;
 
+	public VideoGameDTO() {}
 	public VideoGameDTO(int reviewScore, String releaseDate, String name, String rating, int id, String category) {
 		this.reviewScore = reviewScore;
 		this.releaseDate = releaseDate;
@@ -62,17 +77,4 @@ public class VideoGameDTO{
 	public String getCategory(){
 		return category;
 	}
-
-	@Override
- 	public String toString(){
-		return 
-			"VideoGameDTO{" + 
-			"reviewScore = '" + reviewScore + '\'' + 
-			",releaseDate = '" + releaseDate + '\'' + 
-			",name = '" + name + '\'' + 
-			",rating = '" + rating + '\'' + 
-			",id = '" + id + '\'' + 
-			",category = '" + category + '\'' + 
-			"}";
-		}
 }
