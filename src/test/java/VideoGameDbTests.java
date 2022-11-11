@@ -116,15 +116,16 @@ public class VideoGameDbTests extends VideoGameConfig {
     public void testVideoGameSchemaJSON() {
         given().
                 pathParam("videoGameId", 5).
-                when().
+        when().
                 get(VideoGamesEndpoints.SINGLE_VIDEO_GAME).
-                then().
+        then().
                 body(matchesJsonSchemaInClasspath("VideoGameJsonSchema.json"));
     }
 
     @Test
     public void convertJSONToPojo() {
         Response response =  given().pathParam("videoGameId", 5).
+
         when().
                 get(VideoGamesEndpoints.SINGLE_VIDEO_GAME);
 

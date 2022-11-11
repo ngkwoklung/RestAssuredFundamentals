@@ -60,9 +60,9 @@ public class FootballApiTests extends FootballApiConfig {
     public void extractHeaders() {
         Response response =
                 given().
-                        when().
+                when().
                         get("teams/57").
-                        then()
+                then()
                         .contentType(ContentType.JSON)
                         .extract().response();
 
